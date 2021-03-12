@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews-route
+spec:
+  hosts:
+    - reviews
+  http:
+  - match:
+    - uri:
+        regex: ".*reviews.*"
+    fault:
+      abort:
+        percentage:
+          value: 50.0
+        httpStatus: 500
+    route:
+    - destination:
+        host: reviews
+        subset: v3
+  - route:
+    - destination:
+        host: reviews
+        subset: v3

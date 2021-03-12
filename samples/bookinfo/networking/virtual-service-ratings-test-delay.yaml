@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+# metadata:
+#   name: reviews
+# spec:
+#   hosts:
+#     - reviews
+#   http:
+#   - match:
+#     - uri:
+#         prefix: /reviews
+#     fault:
+#       delay:
+#         percentage:
+#           value: 100.0
+#         fixedDelay: 3s
+#     route:
+#     - destination:
+#         host: reviews
+#         subset: v2
+#   - route:
+#     - destination:
+#         host: reviews
+#         subset: v2
+metadata:
+  name: reviews-route
+  namespace: default
+spec:
+  hosts:
+    - reviews
+  http:
+  - match:
+    - uri:
+        regex: ".*reviews.*"
+    fault:
+      delay:
+        percentage:
+          value: 50.0
+        fixedDelay: 2s
+    route:
+    - destination:
+        host: reviews
+        subset: v2
+  - route:
+    - destination:
+        host: reviews
+        subset: v2
